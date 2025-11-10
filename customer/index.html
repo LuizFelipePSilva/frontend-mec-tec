@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MecTec - Customer</title>
+
+    <link rel="stylesheet" href="/style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="./script.js"></script>
+    <style type="text/tailwindcss">
+        @theme {
+            --color-background: #0E0E0E;
+            --color-text-default: #FFFFFF;
+            --color-primary: #EAFF96;
+            --color-destructor: #FF3737;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        background: '#0E0E0E',
+                        text_default: '#FFFFFF',
+                        primary: '#EAFF96',
+                        destructor: '#FF3737',
+                        input: '#252525',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <header class="flex h-full">
+        <aside class="sidebar">
+            <div class="user-section">
+                <button class="user-btn">
+                    <span class="icon">👤</span> User <span class="arrow">⬇</span>
+                </button>
+            </div>
+
+            <nav class="menu">
+                <ul>
+                    <li><span class="icon">⏰</span> Recent</li>
+                    <a href="/user">
+                        <li><span class="icon">👥</span> Users</li>
+                    </a>
+                    <a href="/customer">
+                        <li class="active"><span class="icon">😊</span> Customers</li>
+                    </a>
+                    <li><span class="icon">🧰</span> Machines</li>
+                    <li><span class="icon">🛠️</span> Services</li>
+                    <li><span class="icon">⚙️</span> Engines</li>
+                </ul>
+            </nav>
+        </aside>
+    </header>
+
+    <main class="flex flex-col w-full itens-center m-20 gap-5">
+        <div class="flex w-full justify-between items-start">
+            <div>
+                <span>🔍</span>
+                <input type="text" class="border-2 rounded-full bg-input px-3" />
+            </div>
+            <a href="./create/" class="bg-primary text-black text-bold px-4 py-2">New Customer</a>
+        </div>
+        <table class="table-auto text-left">
+            <thead class="border-primary border-2">
+                <tr>
+                    <th>name</th>
+                    <th>cpf</th>
+                    <th>phone</th>
+                    <th>email</th>
+                    <th>address</th>
+                    <th>action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="hover:bg-neutral-800">
+                    <td>João Silva</td>
+                    <td>111.222.333-45</td>
+                    <td>+55 (84) 91234-5678</td>
+                    <td>joaosilva@example.com</td>
+                    <td>R. Exemplo, bairro exemplo</td>
+                    <td>
+                        <div class="flex gap-2 py-2">
+                            <button onclick="openDeleteModal(event)" class="bg-destructor p-1">🗑️</button>
+                            <button onclick="openEditModal(event)" class="bg-primary p-1">✏️</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="hover:bg-neutral-800">
+                    <td>João Silva</td>
+                    <td>111.222.333-45</td>
+                    <td>+55 (84) 91234-5678</td>
+                    <td>joaosilva@example.com</td>
+                    <td>R. Exemplo, bairro exemplo</td>
+                    <td>
+                        <div class="flex gap-2 py-2">
+                            <button onclick="openDeleteModal(event)" class="bg-destructor p-1">🗑️</button>
+                            <button onclick="openEditModal(event)" class="bg-primary p-1">✏️</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="hover:bg-neutral-800">
+                    <td>João Silva</td>
+                    <td>111.222.333-45</td>
+                    <td>+55 (84) 91234-5678</td>
+                    <td>joaosilva@example.com</td>
+                    <td>R. Exemplo, bairro exemplo</td>
+                    <td>
+                        <div class="flex gap-2 py-2">
+                            <button onclick="openDeleteModal(event)" class="bg-destructor p-1">🗑️</button>
+                            <button onclick="openEditModal(event)" class="bg-primary p-1">✏️</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="delete-modal" class="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center hidden">
+            <div class="flex flex-col gap-3 bg-black p-10 rounded-xl">
+                <h1 class="text-xl font-bold">Delete customer</h1>
+                <p>delete customer?</p>
+                <div class="flex gap-5 justify-center">
+                    <button onclick="closeDeleteModal(event)" class=" bg-primary text-black text-bold px-10
+                        py-2">Yes</button>
+                    <button onclick="closeDeleteModal(event)" class=" bg-destructor text-black text-bold px-10
+                        py-2">No</button>
+                </div>
+            </div>
+            <p></p>
+        </div>
+        <div id="edit-modal" class="absolute inset-0 bg-black bg-opacity-20 flex justify-end hidden">
+            <div class="w-96 bg-background">
+                <form action="" class="flex flex-col justify-between h-full">
+                    <div>
+                        <h1 class="text-center py-5 text-2xl font-bold">Edit Customer</h1>
+                        <div class="flex flex-col gap-2">
+                            <div class="flex flex-col px-10 justify-between">
+                                <label for="name" class="text-xl font-bold">Name:</label>
+                                <input type="text" class="bg-input border-2 rounded-md py-1" />
+                            </div>
+                            <div class="flex flex-col px-10">
+                                <label for="name" class="text-xl font-bold">Cpf:</label>
+                                <input type="text" class="bg-input border-2 rounded-md py-1" />
+                            </div>
+                            <div class="flex flex-col px-10">
+                                <label for="name" class="text-xl font-bold">Phone:</label>
+                                <input type="text" class="bg-input border-2 rounded-md py-1" />
+                            </div>
+                            <div class="flex flex-col px-10">
+                                <label for="name" class="text-xl font-bold">Email:</label>
+                                <input type="text" class="bg-input border-2 rounded-md py-1" />
+                            </div>
+                            <div class="flex flex-col px-10">
+                                <label for="name" class="text-xl font-bold">Address:</label>
+                                <input type="text" class="bg-input border-2 rounded-md py-1" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex gap-5 justify-center mb-5">
+                        <button class="bg-primary text-black text-bold px-10 py-2">Save</button>
+                        <button onclick="closeEditModal(event)"
+                            class="bg-destructor text-black text-bold px-10 py-2">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>
