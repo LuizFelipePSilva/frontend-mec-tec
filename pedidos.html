@@ -1,0 +1,640 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gerenciamento de Pedidos - EletroSmart</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", sans-serif;
+        background-color: #111;
+        color: #eee;
+        display: flex;
+        height: 100vh;
+      }
+
+      /* Sidebar */
+      .sidebar {
+        width: 250px;
+        background-color: #1a1a1a;
+        display: flex;
+        flex-direction: column;
+        padding-top: 1rem;
+      }
+
+      .user-section {
+        padding: 0 1rem 1rem;
+        border-bottom: 1px solid #333;
+      }
+
+      .user-btn {
+        width: 100%;
+        background: #2b2b2b;
+        color: #fff;
+        border: none;
+        padding: 0.75rem 1rem;
+        border-radius: 4px;
+        font-size: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+      }
+
+      .user-btn:hover {
+        background: #3a3a3a;
+      }
+
+      .menu {
+        flex-grow: 1;
+        margin-top: 2rem;
+      }
+
+      .menu ul {
+        list-style: none;
+      }
+
+      .menu li {
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+
+      .menu li:hover,
+      .menu .active {
+        background-color: #2b2b2b;
+      }
+
+      .menu li a {
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        color: #eee; /* Cor do texto do link */
+        text-decoration: none; /* Remove sublinhado */
+        display: flex; /* Para alinhar ícone e texto */
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .menu li:hover a,
+      .menu .active a {
+        color: #fff;
+      }
+      .content {
+        flex: 1;
+        padding: 2rem;
+        background-color: #111;
+        overflow-y: auto;
+      }
+
+      .title {
+        color: #d8f56a;
+        font-size: 1.8rem;
+        font-weight: bold;
+        margin-bottom: 1.5rem;
+      }
+
+      .search-bar {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .search-bar input {
+        flex: 1;
+        padding: 0.6rem;
+        border-radius: 4px;
+        border: 1px solid #333;
+        background-color: #1a1a1a;
+        color: #eee;
+      }
+
+      .new-btn {
+        background-color: #d8f56a;
+        color: #000;
+        border: none;
+        padding: 0.7rem 1.2rem;
+        border-radius: 4px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+
+      .new-btn:hover {
+        background-color: #cbe75d;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+        font-size: 0.95rem;
+      }
+
+      th,
+      td {
+        padding: 0.75rem;
+        text-align: left;
+        border-bottom: 1px solid #333;
+        vertical-align: top;
+      }
+
+      th {
+        color: #d8f56a;
+        font-weight: 600;
+      }
+
+      td {
+        color: #eee;
+      }
+
+      .actions {
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      .btn-del,
+      .btn-edit,
+      .btn-approved {
+        border: none;
+        padding: 0.4rem 0.6rem;
+        border-radius: 3px;
+        cursor: pointer;
+        font-size: 1rem;
+      }
+
+      .btn-del {
+        background-color: #e63946;
+        color: #fff;
+      }
+
+      .btn-edit {
+        background-color: #d8f56a;
+        color: #000;
+      }
+
+      .btn-approved {
+        background-color: lightgreen;
+        color: #fff; /* CORRIGIDO (era 'fff') */
+      }
+
+      .btn-del:hover {
+        background-color: #c52834;
+      }
+
+      .btn-edit:hover {
+        background-color: #cbe75d;
+      }
+
+      .btn-approved:hover {
+        background-color: #76c076; /* CORRIGIDO (era '901180' e trocado) */
+      }
+
+      .pagination {
+        margin-top: 1rem;
+        text-align: right;
+        font-size: 0.9rem;
+        color: #a0a0a0;
+      }
+
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        display: none;
+        z-index: 1000;
+      }
+
+      .modal-content {
+        background-color: #1f1f1f;
+        padding: 2rem;
+        border-radius: 8px;
+        width: 90%;
+        max-width: 450px;
+        position: relative;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+      }
+
+      .modal-close {
+        position: absolute;
+        top: 0.75rem;
+        right: 1rem;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #d8f56a;
+        cursor: pointer;
+        background: none;
+        border: none;
+      }
+
+      .modal-content h2 {
+        font-size: 1.75rem;
+        font-weight: bold;
+        margin-bottom: 1.5rem;
+        color: #fff;
+      }
+
+      /* Estilos do formulário do modal */
+      .modal-form label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: #ccc;
+        font-size: 0.95rem;
+      }
+
+      .modal-form input,
+      .modal-form textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #333;
+        background-color: #2b2b2b;
+        color: #eee;
+        border-radius: 4px;
+        margin-bottom: 1rem;
+        font-family: "Segoe UI", sans-serif;
+      }
+
+      .modal-form textarea {
+        height: 100px;
+        resize: vertical;
+      }
+
+      .modal-form-select {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #333;
+        background-color: #2b2b2b;
+        color: #999; /* Cor do texto "Pesquisar" */
+        border-radius: 4px;
+        margin-bottom: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+      }
+
+      .modal-form-select .arrow {
+        color: #9f8def; /* Cor da seta (roxo/azul) */
+        font-family: "Courier New", Courier, monospace;
+        font-weight: bold;
+      }
+
+      .modal-form .btn-submit {
+        width: 100%;
+        padding: 0.75rem;
+        border: none;
+        border-radius: 4px;
+        background-color: #d8f56a;
+        color: #000;
+        font-weight: bold;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+
+      .modal-form .btn-submit:hover {
+        background-color: #cbe75d;
+      }
+
+      .modal-delete-text {
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+        color: #eee;
+      }
+
+      .modal-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+      }
+
+      .modal-actions button {
+        border: none;
+        border-radius: 4px;
+        padding: 0.7rem 1.5rem;
+        font-size: 1rem;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .btn-confirm-no {
+        background-color: #e63946;
+        color: #fff;
+      }
+      .btn-confirm-no:hover {
+        background-color: #c52834;
+      }
+
+      .btn-confirm-yes {
+        background-color: #d8f56a;
+        color: #000;
+      }
+      .btn-confirm-yes:hover {
+        background-color: #cbe75d;
+      }
+    </style>
+  </head>
+  <body>
+    <aside class="sidebar">
+      <div class="user-section">
+        <button class="user-btn">
+          <span class="icon">👤</span> Usuário <span class="arrow">⬇</span>
+        </button>
+      </div>
+
+      <nav class="menu">
+        <ul>
+          <li class="active">
+            <a href="/"><span class="icon">⏰</span> Recente</a>
+          </li>
+          <li>
+            <a href="/user"><span class="icon">👥</span> Usuários</a>
+          </li>
+          <li>
+            <a href="/customer"><span class="icon">😊</span> Clientes</a>
+          </li>
+          <li>
+            <a href="/machine"><span class="icon">🧰</span> Maquinas</a>
+          </li>
+          <li>
+            <a href="/task"><span class="icon">🛠️</span> Serviços</a>
+          </li>
+          <li>
+            <a href="/pieces"><span class="icon">⚙️</span> Peças</a>
+          </li>
+        </ul>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <h1 class="title">Gerenciamento de Pedidos</h1>
+
+      <div class="search-bar">
+        <label for="search">Pesquisa:</label>
+        <input type="text" id="search" placeholder="Buscar pedidos..." />
+        <button class="new-btn" id="btn-novo-pedido">Novo pedido</button>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>N° Pedido</th>
+            <th>Maquina</th>
+            <th>Cliente</th>
+            <th>Serviço</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>Liquidificador Brastemp</td>
+            <td>Felipe</td>
+            <td>Troca de carvão M - 40RS<br />Mão de obra - 20RS</td>
+            <td class="actions">
+              <button class="btn-del">🗑️</button>
+              <button class="btn-edit">✏️</button>
+              <button class="btn-approved">✅</button>
+            </td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>AirFryer Eletrolux</td>
+            <td>Gadelha</td>
+            <td>Troca de carvão M - 40RS<br />Mão de obra - 20RS</td>
+            <td class="actions">
+              <button class="btn-del">🗑️</button>
+              <button class="btn-edit">✏️</button>
+              <button class="btn-approved">✅</button>
+            </td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Ventilador Mondial</td>
+            <td>Pedro</td>
+            <td>Troca de carvão M - 40RS<br />Mão de obra - 20RS</td>
+            <td class="actions">
+              <button class="btn-del">🗑️</button>
+              <button class="btn-edit">✏️</button>
+              <button class="btn-approved">✅</button>
+            </td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>Sanduicheira Mondial</td>
+            <td>ElNatan</td>
+            <td>Troca de carvão M - 40RS<br />Mão de obra - 20RS</td>
+            <td class="actions">
+              <button class="btn-del">🗑️</button>
+              <button class="btn-edit">✏️</button>
+              <button class="btn-approved">✅</button>
+            </td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>Cafeteira Eletrolux</td>
+            <td>Renixon</td>
+            <td>Troca de carvão M - 40RS<br />Mão de obra - 20RS</td>
+            <td class="actions">
+              <button class="btn-del">🗑️</button>
+              <button class="btn-edit">✏️</button>
+              <button class="btn-approved">✅</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="pagination">Página 1 - Next</div>
+    </main>
+
+    <div id="modal-criar" class="modal-overlay">
+      <div class="modal-content">
+        <button class="modal-close">×</button>
+        <h2>Criar Pedido</h2>
+        <form class="modal-form">
+          <label for="criar-maquina">Maquina:</label>
+          <div class="modal-form-select">
+            <span>Pesquisar</span>
+            <span class="arrow">▼</span>
+          </div>
+
+          <label for="criar-cliente">Cliente:</label>
+          <div class="modal-form-select">
+            <span>Pesquisar</span>
+            <span class="arrow">▼</span>
+          </div>
+
+          <label for="criar-servico">Serviço:</label>
+          <div class="modal-form-select">
+            <span>Pesquisar</span>
+            <span class="arrow">▼</span>
+          </div>
+
+          <label for="criar-data">Data de Entrada</label>
+          <input type="text" id="criar-data" />
+
+          <button type="submit" class="btn-submit">Criar</button>
+        </form>
+      </div>
+    </div>
+
+    <div id="modal-editar" class="modal-overlay">
+      <div class="modal-content">
+        <button class="modal-close">×</button>
+        <h2>Editar Pedido</h2>
+        <form class="modal-form">
+          <label for="editar-maquina">Maquina</label>
+          <input
+            type="text"
+            id="editar-maquina"
+            value="Liquidificador Brastemp"
+          />
+
+          <label for="editar-cliente">Cliente</label>
+          <input type="text" id="editar-cliente" value="Felipe" />
+
+          <label for="editar-servico">Serviço</label>
+          <textarea id="editar-servico">
+Troca de carvão M - 40RS
+Mão de obra - 20RS</textarea
+          >
+
+          <button type="submit" class="btn-submit">Salvar</button>
+        </form>
+      </div>
+    </div>
+
+    <div id="modal-deletar" class="modal-overlay">
+      <div class="modal-content">
+        <button class="modal-close">×</button>
+        <h2>Deletar Pedido</h2>
+        <p class="modal-delete-text">Deseja deletar este pedido?</p>
+        <div class="modal-actions">
+          <button class="btn-confirm-no">Não</button>
+          <button class="btn-confirm-yes">Sim</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="modal-aprovar" class="modal-overlay">
+      <div class="modal-content">
+        <button class="modal-close">×</button>
+        <h2>Aprovar Pedido</h2>
+        <p class="modal-delete-text">Deseja aprovar este pedido?</p>
+        <div class="modal-actions">
+          <button class="btn-confirm-no">Não</button>
+          <button class="btn-confirm-yes">Sim</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // Seletores dos Modais
+        const modalCriar = document.getElementById("modal-criar");
+        const modalEditar = document.getElementById("modal-editar");
+        const modalDeletar = document.getElementById("modal-deletar");
+        const modalAprovar = document.getElementById("modal-aprovar");
+
+        // Botões de Abrir
+        const btnNovoPedido = document.getElementById("btn-novo-pedido");
+        const btnsEditar = document.querySelectorAll(".btn-edit");
+        const btnsDeletar = document.querySelectorAll(".btn-del");
+        const btnsAprovar = document.querySelectorAll(".btn-approved");
+
+        // Botões de Fechar
+        const btnsClose = document.querySelectorAll(".modal-close");
+        const overlays = document.querySelectorAll(".modal-overlay");
+        const btnCancelarDelete = document.querySelector(
+          "#modal-deletar .btn-confirm-no",
+        );
+        const btnCancelarAprovar = document.querySelector(
+          "#modal-aprovar .btn-confirm-no",
+        );
+
+        // Função para abrir modal
+        const openModal = (modal) => {
+          if (modal) modal.style.display = "flex";
+        };
+
+        // Função para fechar modal
+        const closeModal = (modal) => {
+          if (modal) modal.style.display = "none";
+        };
+
+        // --- Event Listeners para ABRIR ---
+
+        // Abrir Modal Criar
+        if (btnNovoPedido) {
+          btnNovoPedido.addEventListener("click", () => {
+            openModal(modalCriar);
+          });
+        }
+
+        // Abrir Modal Editar
+        btnsEditar.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            openModal(modalEditar);
+          });
+        });
+
+        // Abrir Modal Deletar
+        btnsDeletar.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            openModal(modalDeletar);
+          });
+        });
+
+        // Abrir Modal Aprovar
+        btnsAprovar.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            openModal(modalAprovar);
+          });
+        });
+
+        // --- Event Listeners para FECHAR ---
+
+        // Fechar pelo 'X'
+        btnsClose.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            closeModal(btn.closest(".modal-overlay"));
+          });
+        });
+
+        // Fechar clicando fora
+        overlays.forEach((overlay) => {
+          overlay.addEventListener("click", (e) => {
+            if (e.target === overlay) {
+              closeModal(overlay);
+            }
+          });
+        });
+
+        // Fechar modal de delete ao clicar em "Não"
+        if (btnCancelarDelete) {
+          btnCancelarDelete.addEventListener("click", () => {
+            closeModal(modalDeletar);
+          });
+        }
+
+        // Fechar modal de aprovar ao clicar em "Não"
+        if (btnCancelarAprovar) {
+          btnCancelarAprovar.addEventListener("click", () => {
+            closeModal(modalAprovar);
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

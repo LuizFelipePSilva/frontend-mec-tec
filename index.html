@@ -4,24 +4,163 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sistema de Gerenciamento EletroSmart</title>
-    <link rel="stylesheet" href="style.css" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", sans-serif;
+        background-color: #111;
+        color: #eee;
+        display: flex;
+        height: 100vh;
+      }
+
+      .sidebar {
+        width: 250px;
+        background-color: #1a1a1a;
+        display: flex;
+        flex-direction: column;
+        padding-top: 1rem;
+      }
+
+      .user-section {
+        padding: 0 1rem 1rem;
+        border-bottom: 1px solid #333;
+      }
+
+      .user-btn {
+        width: 100%;
+        background: #2b2b2b;
+        color: #fff;
+        border: none;
+        padding: 0.75rem 1rem;
+        border-radius: 4px;
+        font-size: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+      }
+
+      .user-btn:hover {
+        background: #3a3a3a;
+      }
+
+      .menu {
+        flex-grow: 1;
+        margin-top: 2rem;
+      }
+
+      .menu ul {
+        list-style: none;
+      }
+
+      /* --- ESTILO DO MENU CORRIGIDO --- */
+
+      .menu li {
+        /* A 'li' agora só cuida do fundo no hover */
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+
+      .menu li:hover,
+      .menu .active {
+        background-color: #2b2b2b;
+      }
+
+      /* Estilos aplicados diretamente ao link <a> */
+      .menu li a {
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        color: #eee; /* Cor do texto do link */
+        text-decoration: none; /* Remove sublinhado */
+        display: flex; /* Para alinhar ícone e texto */
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      /* Garante que o texto fique branco no hover também */
+      .menu li:hover a,
+      .menu .active a {
+        color: #fff;
+      }
+
+      /* --- FIM DA CORREÇÃO --- */
+
+      /* Main Content */
+      .content {
+        flex: 1;
+        padding: 2rem;
+        overflow-y: auto;
+        background-color: #111;
+      }
+
+      .title {
+        text-align: center;
+        color: #d8f56a;
+        font-size: 1.8rem;
+        margin-bottom: 2rem;
+      }
+
+      /* Cards */
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .card {
+        background-color: #222;
+        padding: 1.25rem;
+        border-radius: 8px;
+        box-shadow: 0 0 10px #000;
+        font-size: 0.95rem;
+        line-height: 1.6;
+      }
+    </style>
   </head>
   <body>
     <aside class="sidebar">
       <div class="user-section">
         <button class="user-btn">
-          <span class="icon">👤</span> User <span class="arrow">⬇</span>
+          <span class="icon">👤</span> Usuário <span class="arrow">⬇</span>
         </button>
       </div>
 
       <nav class="menu">
         <ul>
-          <li class="active"><span class="icon">⏰</span> Recent</li>
-          <li><span class="icon">👥</span> Users</li>
-          <li><span class="icon">😊</span> Customers</li>
-          <li><span class="icon">🧰</span> Machines</li>
-          <li><span class="icon">🛠️</span> Services</li>
-          <li><span class="icon">⚙️</span> Engines</li>
+          <li>
+            <a class="w-full" href="/"><span class="icon">⏰</span> Recente</a>
+          </li>
+          <li>
+            <a class="w-full" href="/user"
+              ><span class="icon">👥</span> Usuários</a
+            >
+          </li>
+          <li>
+            <a class="w-full" href="/customer"
+              ><span class="icon">😊</span> Clientes</a
+            >
+          </li>
+          <li>
+            <a class="w-full" href="/machine"
+              ><span class="icon">🧰</span> Máquinas</a
+            >
+          </li>
+          <li>
+            <a class="w-full" href="/task"
+              ><span class="icon">🛠️</span> Serviços</a
+            >
+          </li>
+          <li>
+            <a class="w-full" href="/pieces"
+              ><span class="icon">🔩</span> Peças</a
+            >
+          </li>
         </ul>
       </nav>
     </aside>
