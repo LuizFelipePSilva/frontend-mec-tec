@@ -73,21 +73,22 @@
                         <h1 class="text-center py-5 text-2xl font-bold">Troca senha</h1>
                         <div class="flex flex-col gap-2">
                             <div class="flex flex-col px-10 justify-between">
-                                <label for="name" class="text-xl font-bold">Senha antiga:</label>
-                                <input type="password" class="bg-input border-2 rounded-md py-1" />
+                                <label for="old-password" class="text-xl font-bold">Senha antiga:</label>
+                                <input id="old-password" type="password" class="bg-input border-2 rounded-md py-1" />
                             </div>
                             <div class="flex flex-col px-10">
-                                <label for="name" class="text-xl font-bold">Nova senha:</label>
-                                <input type="password" class="bg-input border-2 rounded-md py-1" />
+                                <label for="new-password" class="text-xl font-bold">Nova senha:</label>
+                                <input id="new-password" type="password" class="bg-input border-2 rounded-md py-1" />
                             </div>
                             <div class="flex flex-col px-10">
-                                <label for="name" class="text-xl font-bold">Confirmar:</label>
-                                <input type="password" class="bg-input border-2 rounded-md py-1" />
+                                <label for="confirm-password" class="text-xl font-bold">Confirmar:</label>
+                                <input id="confirm-password" type="password"
+                                    class="bg-input border-2 rounded-md py-1" />
                             </div>
                         </div>
                     </div>
                     <div class="flex gap-5 justify-center mb-5">
-                        <button onclick="closeChangePasswordModal(event)"
+                        <button onclick="valid(event)"
                             class="bg-primary text-black text-bold px-10 py-2">Salvar</button>
                     </div>
                 </form>
