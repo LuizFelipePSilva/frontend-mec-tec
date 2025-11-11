@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MecTec - Customer</title>
+    <title>MecTec - Cliente</title>
 
     <link rel="stylesheet" href="/style.css">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -38,22 +38,18 @@
         <aside class="sidebar">
             <div class="user-section">
                 <button class="user-btn">
-                    <span class="icon">👤</span> User <span class="arrow">⬇</span>
+                    <span class="icon">👤</span> Usuário <span class="arrow">⬇</span>
                 </button>
             </div>
 
             <nav class="menu">
                 <ul>
-                    <li><span class="icon">⏰</span> Recent</li>
-                    <a href="/user">
-                        <li><span class="icon">👥</span> Users</li>
-                    </a>
-                    <a href="/customer">
-                        <li class="active"><span class="icon">😊</span> Customers</li>
-                    </a>
-                    <li><span class="icon">🧰</span> Machines</li>
-                    <li><span class="icon">🛠️</span> Services</li>
-                    <li><span class="icon">⚙️</span> Engines</li>
+                    <li><a class="w-full" href="/"><span class="icon">⏰</span> Recente</a></li>
+                    <li><a class="w-full" href="/user"><span class="icon">👥</span> Usuários</a></li>
+                    <li class="active"><a class="w-full" href="/customer"><span class="icon">😊</span> Clientes</a></li>
+                    <li><a class="w-full" href="/machine"><span class="icon">🧰</span> Máquinas</a></li>
+                    <li><a class="w-full" href="/task"><span class="icon">🛠️</span> Serviços</a></li>
+                    <li><a class="w-full" href="/pieces"><span class="icon">🔩</span> Peças</a></li>
                 </ul>
             </nav>
         </aside>
@@ -62,10 +58,10 @@
     <main class="flex flex-col w-full itens-center m-20 gap-5">
         <form action="" class="flex flex-col justify-between h-full">
             <div>
-                <h1 class="text-center py-5 text-2xl font-bold">Create Customer</h1>
+                <h1 class="text-center py-5 text-2xl font-bold">Novo Cliente</h1>
                 <div class="flex flex-col gap-2">
                     <div class="flex flex-col px-10 justify-between">
-                        <label for="name" class="text-xl font-bold">Name:</label>
+                        <label for="name" class="text-xl font-bold">Nome:</label>
                         <input type="text" class="bg-input border-2 rounded-md py-1" />
                     </div>
                     <div class="flex flex-col px-10">
@@ -73,22 +69,22 @@
                         <input type="text" class="bg-input border-2 rounded-md py-1" />
                     </div>
                     <div class="flex flex-col px-10">
-                        <label for="name" class="text-xl font-bold">Phone:</label>
+                        <label for="name" class="text-xl font-bold">Telefone:</label>
                         <input type="text" class="bg-input border-2 rounded-md py-1" />
                     </div>
                     <div class="flex flex-col px-10">
                         <label for="name" class="text-xl font-bold">Email:</label>
-                        <input type="text" class="bg-input border-2 rounded-md py-1" />
+                        <input type="email" class="bg-input border-2 rounded-md py-1" />
                     </div>
                     <div class="flex flex-col px-10">
-                        <label for="name" class="text-xl font-bold">Address:</label>
+                        <label for="name" class="text-xl font-bold">Endereço:</label>
                         <input type="text" class="bg-input border-2 rounded-md py-1" />
                     </div>
                 </div>
             </div>
             <div class="flex gap-5 justify-center mb-5">
-                <button class="bg-primary text-black text-bold px-10 py-2">Create</button>
-                <button class="bg-primary text-black text-bold px-10 py-2">Create and New Machines</button>
+                <button class="bg-primary text-black text-bold px-10 py-2">Criar</button>
+                <a href="/machine/create" class="bg-primary text-black text-bold px-10 py-2">Criar e nova maquina</a>
             </div>
         </form>
     </main>
