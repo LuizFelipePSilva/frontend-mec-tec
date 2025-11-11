@@ -29,3 +29,28 @@ window.addEventListener("click", (event) => {
         dropdownMenu.classList.add("hidden");
     }
 })
+
+function valid(event) {
+    event.preventDefault();
+
+    const oldPassword = document.getElementById("old-password").value.trim();
+    const newPassword = document.getElementById("new-password").value.trim();
+    const confirmPassword = document.getElementById("confirm-password").value.trim();
+
+    const field = {
+        "senha antiga": oldPassword,
+        "nova senha": newPassword,
+        "confirma": confirmPassword
+    };
+
+    const fieldBlank = Object.entries(field).filter(([_, valor]) => !valor);
+
+    if (fieldBlank.length > 0) {
+        alert(fieldBlank.map((s) => {
+            return `${s[0]} está vazio`
+        }).join("\n"));
+        return;
+    }
+
+    closeChangePasswordModal(event);
+}
