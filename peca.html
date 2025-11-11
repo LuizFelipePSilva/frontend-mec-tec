@@ -449,7 +449,7 @@
           <input type="text" id="criar-nome" />
 
           <label for="criar-preco">Preço da peça:</label>
-          <input type="text" id="criar-preco" />
+          <input type="number" id="criar-preco" />
 
           <label for="criar-marca">Marca da peça</label>
           <input type="text" id="criar-marca" />
@@ -471,7 +471,7 @@
           <input type="text" id="editar-nome" value="Parafuso Sextavado" />
 
           <label for="editar-preco">Preço</label>
-          <input type="text" id="editar-preco" value="R$ 2,50" />
+          <input type="number" id="editar-preco" value="2.40" />
 
           <label for="editar-marca">Marca</label>
           <input type="text" id="editar-marca" value="Ciser" />
@@ -500,80 +500,87 @@ Parafuso M8×25mm em aço carbono com acabamento zincado.</textarea
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {
-        // Seletores dos Modais
         const modalCriar = document.getElementById("modal-criar");
         const modalEditar = document.getElementById("modal-editar");
         const modalDeletar = document.getElementById("modal-deletar");
 
-        // Botões de Abrir
         const btnNovaPeca = document.getElementById("btn-nova-peca");
         const btnsEditar = document.querySelectorAll(".btn-edit");
         const btnsDeletar = document.querySelectorAll(".btn-del");
 
-        // Botões de Fechar
         const btnsClose = document.querySelectorAll(".modal-close");
         const overlays = document.querySelectorAll(".modal-overlay");
         const btnCancelarDelete = document.querySelector(
           "#modal-deletar .btn-confirm-no",
         );
+        const btnConfirmarDelete = document.querySelector(
+          "#modal-deletar .btn-confirm-yes",
+        );
 
-        // Função para abrir modal
-        const openModal = (modal) => {
-          if (modal) modal.style.display = "flex";
-        };
+        const openModal = (m) => (m.style.display = "flex");
+        const closeModal = (m) => (m.style.display = "none");
 
-        // Função para fechar modal
-        const closeModal = (modal) => {
-          if (modal) modal.style.display = "none";
-        };
+        // abrir modais
+        btnNovaPeca.addEventListener("click", () => openModal(modalCriar));
+        btnsEditar.forEach((btn) =>
+          btn.addEventListener("click", () => openModal(modalEditar)),
+        );
+        btnsDeletar.forEach((btn) =>
+          btn.addEventListener("click", () => openModal(modalDeletar)),
+        );
 
-        // --- Event Listeners para ABRIR ---
+        // fechar modais
+        btnsClose.forEach((b) =>
+          b.addEventListener("click", () =>
+            closeModal(b.closest(".modal-overlay")),
+          ),
+        );
+        overlays.forEach((o) =>
+          o.addEventListener("click", (e) => e.target === o && closeModal(o)),
+        );
+        btnCancelarDelete.addEventListener("click", () =>
+          closeModal(modalDeletar),
+        );
+        btnConfirmarDelete.addEventListener("click", () =>
+          closeModal(modalDeletar),
+        );
 
-        // Abrir Modal Criar
-        btnNovaPeca.addEventListener("click", () => {
-          openModal(modalCriar);
+        // validação criar
+        const formCriar = modalCriar.querySelector("form");
+        formCriar.addEventListener("submit", (e) => {
+          e.preventDefault();
+          const nome = formCriar.querySelector("#criar-nome").value.trim();
+          const preco = formCriar.querySelector("#criar-preco").value.trim();
+          const marca = formCriar.querySelector("#criar-marca").value.trim();
+          const desc = formCriar.querySelector("#criar-desc").value.trim();
+
+          if (!nome || !preco || !marca || !desc)
+            return alert("Todos os campos são obrigatórios.");
+          if (isNaN(parseFloat(preco.replace(",", "."))))
+            return alert("Preço inválido.");
+
+          alert("✅ Peça validada com sucesso!");
+          formCriar.reset();
+          closeModal(modalCriar);
         });
 
-        // Abrir Modal Editar (para cada botão de editar)
-        btnsEditar.forEach((btn) => {
-          btn.addEventListener("click", () => {
-            openModal(modalEditar);
-            // Aqui você poderia carregar os dados da linha da tabela no modal
-          });
+        // validação editar
+        const formEditar = modalEditar.querySelector("form");
+        formEditar.addEventListener("submit", (e) => {
+          e.preventDefault();
+          const nome = formEditar.querySelector("#editar-nome").value.trim();
+          const preco = formEditar.querySelector("#editar-preco").value.trim();
+          const marca = formEditar.querySelector("#editar-marca").value.trim();
+          const desc = formEditar.querySelector("#editar-desc").value.trim();
+
+          if (!nome || !preco || !marca || !desc)
+            return alert("Todos os campos são obrigatórios.");
+          if (isNaN(parseFloat(preco.replace("R$", "").replace(",", "."))))
+            return alert("Preço inválido.");
+
+          alert("✏️ Edição validada com sucesso!");
+          closeModal(modalEditar);
         });
-
-        // Abrir Modal Deletar (para cada botão de deletar)
-        btnsDeletar.forEach((btn) => {
-          btn.addEventListener("click", () => {
-            openModal(modalDeletar);
-          });
-        });
-
-        // --- Event Listeners para FECHAR ---
-
-        // Fechar pelo 'X' (em todos os modais)
-        btnsClose.forEach((btn) => {
-          btn.addEventListener("click", () => {
-            closeModal(btn.closest(".modal-overlay"));
-          });
-        });
-
-        // Fechar clicando fora (no overlay)
-        overlays.forEach((overlay) => {
-          overlay.addEventListener("click", (e) => {
-            // Garante que o clique foi no overlay e não no conteúdo
-            if (e.target === overlay) {
-              closeModal(overlay);
-            }
-          });
-        });
-
-        // Fechar modal de delete ao clicar em "Não"
-        if (btnCancelarDelete) {
-          btnCancelarDelete.addEventListener("click", () => {
-            closeModal(modalDeletar);
-          });
-        }
       });
     </script>
   </body>

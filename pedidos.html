@@ -541,19 +541,16 @@ Mão de obra - 20RS</textarea
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {
-        // Seletores dos Modais
         const modalCriar = document.getElementById("modal-criar");
         const modalEditar = document.getElementById("modal-editar");
         const modalDeletar = document.getElementById("modal-deletar");
         const modalAprovar = document.getElementById("modal-aprovar");
 
-        // Botões de Abrir
         const btnNovoPedido = document.getElementById("btn-novo-pedido");
         const btnsEditar = document.querySelectorAll(".btn-edit");
         const btnsDeletar = document.querySelectorAll(".btn-del");
         const btnsAprovar = document.querySelectorAll(".btn-approved");
 
-        // Botões de Fechar
         const btnsClose = document.querySelectorAll(".modal-close");
         const overlays = document.querySelectorAll(".modal-overlay");
         const btnCancelarDelete = document.querySelector(
@@ -562,76 +559,94 @@ Mão de obra - 20RS</textarea
         const btnCancelarAprovar = document.querySelector(
           "#modal-aprovar .btn-confirm-no",
         );
+        const btnConfirmarDelete = document.querySelector(
+          "#modal-deletar .btn-confirm-yes",
+        );
+        const btnConfirmarAprovar = document.querySelector(
+          "#modal-aprovar .btn-confirm-yes",
+        );
 
-        // Função para abrir modal
-        const openModal = (modal) => {
-          if (modal) modal.style.display = "flex";
-        };
+        const openModal = (m) => m && (m.style.display = "flex");
+        const closeModal = (m) => m && (m.style.display = "none");
 
-        // Função para fechar modal
-        const closeModal = (modal) => {
-          if (modal) modal.style.display = "none";
-        };
+        // --- Abertura ---
+        btnNovoPedido?.addEventListener("click", () => openModal(modalCriar));
+        btnsEditar.forEach((b) =>
+          b.addEventListener("click", () => openModal(modalEditar)),
+        );
+        btnsDeletar.forEach((b) =>
+          b.addEventListener("click", () => openModal(modalDeletar)),
+        );
+        btnsAprovar.forEach((b) =>
+          b.addEventListener("click", () => openModal(modalAprovar)),
+        );
 
-        // --- Event Listeners para ABRIR ---
+        // --- Fechamento ---
+        btnsClose.forEach((b) =>
+          b.addEventListener("click", () =>
+            closeModal(b.closest(".modal-overlay")),
+          ),
+        );
+        overlays.forEach((o) =>
+          o.addEventListener("click", (e) => e.target === o && closeModal(o)),
+        );
 
-        // Abrir Modal Criar
-        if (btnNovoPedido) {
-          btnNovoPedido.addEventListener("click", () => {
-            openModal(modalCriar);
-          });
-        }
-
-        // Abrir Modal Editar
-        btnsEditar.forEach((btn) => {
-          btn.addEventListener("click", () => {
-            openModal(modalEditar);
-          });
+        btnCancelarDelete?.addEventListener("click", () =>
+          closeModal(modalDeletar),
+        );
+        btnCancelarAprovar?.addEventListener("click", () =>
+          closeModal(modalAprovar),
+        );
+        btnConfirmarDelete?.addEventListener("click", () => {
+          alert("🗑️ Ação de exclusão confirmada visualmente.");
+          closeModal(modalDeletar);
+        });
+        btnConfirmarAprovar?.addEventListener("click", () => {
+          alert("✅ Pedido aprovado visualmente.");
+          closeModal(modalAprovar);
         });
 
-        // Abrir Modal Deletar
-        btnsDeletar.forEach((btn) => {
-          btn.addEventListener("click", () => {
-            openModal(modalDeletar);
-          });
-        });
-
-        // Abrir Modal Aprovar
-        btnsAprovar.forEach((btn) => {
-          btn.addEventListener("click", () => {
-            openModal(modalAprovar);
-          });
-        });
-
-        // --- Event Listeners para FECHAR ---
-
-        // Fechar pelo 'X'
-        btnsClose.forEach((btn) => {
-          btn.addEventListener("click", () => {
-            closeModal(btn.closest(".modal-overlay"));
-          });
-        });
-
-        // Fechar clicando fora
-        overlays.forEach((overlay) => {
-          overlay.addEventListener("click", (e) => {
-            if (e.target === overlay) {
-              closeModal(overlay);
+        // --- Validação do modal Criar ---
+        const formCriar = modalCriar?.querySelector("form");
+        if (formCriar) {
+          formCriar.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const campos = formCriar.querySelectorAll("input, textarea");
+            for (const campo of campos) {
+              if (!campo.value.trim())
+                return alert("Todos os campos são obrigatórios.");
             }
-          });
-        });
-
-        // Fechar modal de delete ao clicar em "Não"
-        if (btnCancelarDelete) {
-          btnCancelarDelete.addEventListener("click", () => {
-            closeModal(modalDeletar);
+            const preco = formCriar.querySelector(
+              'input[type="text"][id*="preco"]',
+            );
+            if (preco && isNaN(parseFloat(preco.value.replace(",", "."))))
+              return alert("Preço inválido.");
+            alert("🆕 Pedido criado visualmente com sucesso!");
+            formCriar.reset();
+            closeModal(modalCriar);
           });
         }
 
-        // Fechar modal de aprovar ao clicar em "Não"
-        if (btnCancelarAprovar) {
-          btnCancelarAprovar.addEventListener("click", () => {
-            closeModal(modalAprovar);
+        // --- Validação do modal Editar ---
+        const formEditar = modalEditar?.querySelector("form");
+        if (formEditar) {
+          formEditar.addEventListener("submit", (e) => {
+            e.preventDefault();
+            const campos = formEditar.querySelectorAll("input, textarea");
+            for (const campo of campos) {
+              if (!campo.value.trim())
+                return alert("Todos os campos são obrigatórios.");
+            }
+            const preco = formEditar.querySelector(
+              'input[type="text"][id*="preco"]',
+            );
+            if (
+              preco &&
+              isNaN(parseFloat(preco.value.replace("R$", "").replace(",", ".")))
+            )
+              return alert("Preço inválido.");
+            alert("✏️ Edição validada visualmente!");
+            closeModal(modalEditar);
           });
         }
       });
