@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MecTec - Cliente</title>
+
+    <link rel="stylesheet" href="/style.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="./script.js" defer></script>
+    <style type="text/tailwindcss">
+      @theme {
+        --color-background: #0e0e0e;
+        --color-text-default: #ffffff;
+        --color-primary: #eaff96;
+        --color-destructor: #ff3737;
+      }
+    </style>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              background: "#0E0E0E",
+              text_default: "#FFFFFF",
+              primary: "#EAFF96",
+              destructor: "#FF3737",
+              input: "#252525",
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+
+  <body>
+    <header class="flex h-full">
+      <aside class="sidebar">
+        <div class="user-section">
+          <button class="user-btn">
+            <span class="icon">👤</span> Usuário <span class="arrow">⬇</span>
+          </button>
+        </div>
+
+        <nav class="menu">
+          <ul>
+            <li>
+              <a class="w-full" href="../index.html"
+                ><span class="icon">⏰</span> Recente</a
+              >
+            </li>
+            <li>
+              <a class="w-full" href="../user/index.html"
+                ><span class="icon">👥</span> Usuários</a
+              >
+            </li>
+            <li>
+              <a class="w-full" href="../customer/index.html"
+                ><span class="icon">😊</span> Clientes</a
+              >
+            </li>
+            <li>
+              <a class="w-full" href="../machine/index.html"
+                ><span class="icon">🧰</span> Máquinas</a
+              >
+            </li>
+            <li>
+              <a class="w-full" href="../task/index.html"
+                ><span class="icon">🛠️</span> Serviços</a
+              >
+            </li>
+            <li>
+              <a class="w-full" href="../piece/peca.html"
+                ><span class="icon">🔩</span> Peças</a
+              >
+            </li>
+                        <li>
+              <a class="w-full" href="../order/pedidos.html"
+                ><span class="icon">🔩</span> Pedido</a
+              >
+            </li>
+          </ul>
+        </nav>
+      </aside>
+    </header>
+
+    <main class="flex flex-col w-full itens-center m-20 gap-5">
+      <div class="flex w-full justify-between items-start">
+        <div>
+          <span>🔍</span>
+          <input type="text" class="border-2 rounded-full bg-input px-3" />
+        </div>
+        <a href="./create/" class="bg-primary text-black text-bold px-4 py-2"
+          >Novo Cliente</a
+        >
+      </div>
+      <table class="table-auto text-left">
+        <thead class="border-primary border-2">
+          <tr>
+            <th>nome</th>
+            <th>cpf</th>
+            <th>telefone</th>
+            <th>email</th>
+            <th>endereço</th>
+            <th>ação</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="hover:bg-neutral-800">
+            <td>João Silva</td>
+            <td>111.222.333-45</td>
+            <td>+55 (84) 91234-5678</td>
+            <td>joaosilva@example.com</td>
+            <td>R. Exemplo, bairro exemplo</td>
+            <td>
+              <div class="flex gap-2 py-2">
+                <button
+                  onclick="openDeleteModal(event)"
+                  class="bg-destructor p-1"
+                >
+                  🗑️
+                </button>
+                <button onclick="openEditModal(event)" class="bg-primary p-1">
+                  ✏️
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr class="hover:bg-neutral-800">
+            <td>João Silva</td>
+            <td>111.222.333-45</td>
+            <td>+55 (84) 91234-5678</td>
+            <td>joaosilva@example.com</td>
+            <td>R. Exemplo, bairro exemplo</td>
+            <td>
+              <div class="flex gap-2 py-2">
+                <button
+                  onclick="openDeleteModal(event)"
+                  class="bg-destructor p-1"
+                >
+                  🗑️
+                </button>
+                <button onclick="openEditModal(event)" class="bg-primary p-1">
+                  ✏️
+                </button>
+              </div>
+            </td>
+          </tr>
+          <tr class="hover:bg-neutral-800">
+            <td>João Silva</td>
+            <td>111.222.333-45</td>
+            <td>+55 (84) 91234-5678</td>
+            <td>joaosilva@example.com</td>
+            <td>R. Exemplo, bairro exemplo</td>
+            <td>
+              <div class="flex gap-2 py-2">
+                <button
+                  onclick="openDeleteModal(event)"
+                  class="bg-destructor p-1"
+                >
+                  🗑️
+                </button>
+                <button onclick="openEditModal(event)" class="bg-primary p-1">
+                  ✏️
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div
+        id="delete-modal"
+        class="absolute inset-0 bg-black bg-opacity-20 flex items-center justify-center hidden"
+      >
+        <div
+          id="delete-modal-content"
+          class="flex flex-col gap-3 bg-black p-10 rounded-xl"
+        >
+          <h1 class="text-xl font-bold">Deletar o cliente</h1>
+          <p>deseja deleta o cliente?</p>
+          <div class="flex gap-5 justify-center">
+            <button
+              onclick="closeDeleteModal(event)"
+              class="bg-primary text-black text-bold px-10 py-2"
+            >
+              Sim
+            </button>
+            <button
+              onclick="closeDeleteModal(event)"
+              class="bg-destructor text-black text-bold px-10 py-2"
+            >
+              Não
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        id="edit-modal"
+        class="absolute inset-0 bg-black bg-opacity-20 flex justify-end hidden"
+      >
+        <div id="edit-modal-content" class="w-96 bg-background">
+          <form action="" class="flex flex-col justify-between h-full">
+            <div>
+              <h1 class="text-center py-5 text-2xl font-bold">
+                Editar Cliente
+              </h1>
+              <div class="flex flex-col gap-2">
+                <div class="flex flex-col px-10 justify-between">
+                  <label for="name" class="text-xl font-bold">Nome:</label>
+                  <input
+                    id="name"
+                    type="text"
+                    class="bg-input border-2 rounded-md py-1"
+                  />
+                </div>
+                <div class="flex flex-col px-10">
+                  <label for="cpf" class="text-xl font-bold">Cpf:</label>
+                  <input
+                    id="cpf"
+                    type="text"
+                    class="bg-input border-2 rounded-md py-1"
+                  />
+                </div>
+                <div class="flex flex-col px-10">
+                  <label for="phone" class="text-xl font-bold">Telefone:</label>
+                  <input
+                    id="phone"
+                    type="text"
+                    class="bg-input border-2 rounded-md py-1"
+                  />
+                </div>
+                <div class="flex flex-col px-10">
+                  <label for="email" class="text-xl font-bold">Email:</label>
+                  <input
+                    id="email"
+                    type="email"
+                    class="bg-input border-2 rounded-md py-1"
+                  />
+                </div>
+                <div class="flex flex-col px-10">
+                  <label for="address" class="text-xl font-bold"
+                    >Endereço:</label
+                  >
+                  <input
+                    id="address"
+                    type="text"
+                    class="bg-input border-2 rounded-md py-1"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="flex gap-5 justify-center mb-5">
+              <button
+                onclick="valid(event)"
+                class="bg-primary text-black text-bold px-10 py-2"
+              >
+                Salvar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
+
